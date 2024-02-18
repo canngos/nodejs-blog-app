@@ -1,0 +1,32 @@
+<html lang="en">
+    <%- include('../partials/head.ejs') %>
+
+    <body>
+        
+        <%- include('../partials/nav.ejs') %>
+
+        <div class="details content">
+            <h2><%= blog.title %></h2>
+            <div class="content">
+                <p><%= blog.body %></p>
+            </div>            
+            <a class="delete" data-doc="<%= blog._id %>">delete</a>
+            <a href="/blogs">Back to all blogs</a>
+        </div>
+
+        <%- include('../partials/footer.ejs') %>
+
+        <script>
+            const deleteBtn = document.querySelector('a.delete');
+            deleteBtn.addEventListener('click', (e) => {
+                const id = e.target.getAttribute('data-doc');
+                fetch(`/blogs/${id}`, {
+                    method: 'DELETE'
+                })
+                .then((res) => res.json())
+                .then((data) => window.location.href = data.redirect)
+                .catch(err => console.error(err));
+            });
+        </script>
+    </body>
+</html>
